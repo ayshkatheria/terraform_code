@@ -1,0 +1,19 @@
+Need to create below resources :-
+
+1. Resouces :- EC2 & S3
+
+2. Provider :- aws
+
+3. Variable :- for ec2 & S3 name, ami etc
+
+4. backend state file :- S3 & Dynamodb
+
+5. aws configure
+
+
+
+Steps:-
+1. We will create a terraform.tf file and create a terraform block and define "required providers" & "backend block for S3".
+2. Lets create S3 bucket and define s3 bucket name in variables file.
+3. Lets create ec2 intance, create two resources one for key-pair and other for instance and pass variables in file.
+4. Lets create Dynamodb for backend state file table .
