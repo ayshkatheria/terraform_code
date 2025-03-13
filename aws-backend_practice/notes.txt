@@ -1,22 +1,19 @@
-Scenario:- 
-- create and maintain remote backend for "tfstate" file
-- Use "Module" to create infrastructure for "DEV" , "PROD" & "Test/stage"
-- Infra should have - 2 ec2
-                    - 1 S3
-                    - 1 dynamodb
+Scenario:
 
-STEPS :-
+🌍 Create and maintain a remote backend for the "tfstate" file.
+🏗️ Use "Module" to create infrastructure for "DEV", "PROD", and "Test/Stage".
+⚙️ The infrastructure should include:
+2 EC2 instances
+1 S3 bucket
+1 DynamoDB table
+Steps:
 
-1. Lets first create a backend file :- it has one S3 bucket for maintaining ".tfstate" file and Dynamodb table for lock file. 
-
-2. Create terraform.tf file and only define terraform block.
-
-3. Create a provider file and declare aws region.
-
-4. Now lets create a infra under my_infra folder
-         - my_server.tf
-         - my_bucket.tf
-         - my_table.tf
-         - variables.tf
-
-5. Now lets create a main.tf file to pass all the requirements.
+🛠️ Let's first create a backend file: It will contain one S3 bucket for maintaining the ".tfstate" file and a DynamoDB table for the lock file.
+📝 Create the terraform.tf file and define only the terraform block.
+🌐 Create a provider file and declare the AWS region.
+🏗️ Now, let's create the infrastructure under the my_infra folder:
+my_server.tf
+my_bucket.tf
+my_table.tf
+variables.tf
+⚡ Now, let's create a main.tf file to pass all the requirements.
