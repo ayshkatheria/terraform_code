@@ -1,8 +1,8 @@
 resource "aws_instance" "infra_servers" {
     
-    count = 2
+    count = 1
     ami = var.aws_ami
-    # key_name = ""
+    key_name = "terra_key"
     instance_type = var.instance_type
     tags = {
       name = "${var.my_env}-machines"

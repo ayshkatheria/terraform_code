@@ -5,19 +5,26 @@ variable "aws_dynamodb_name" {
 
 # Passing timestamp to create a bucket uniquely everytime.
 variable "aws_s3_bucket_name" {
-    default = "my-state-bucket-${timestamp()}"
+    default = "my-state-bucket"
 }
 
 # Passing region for provider file
 variable "aws_region" {
-     default = "us-east-2"
+     default = "us-east-1"
  }
 
-
+# S3 bucket for tfstate files
+resource "aws_s3_bucket" "my_state_file_bucket" {
+    bucket = "my-state-bucket-2025-03-13t14-26-39z"
+    tags = {
+      name = "my-state-bucket-2025-03-13t14-26-39z"
+    }
+  
+}
 # dynamodb for lockfiles
 resource "aws_dynamodb_table" "my_dynamodb_state_table" {
 
-      name = var.aws_dynamodb_name
+      name = "statefile_table"
       hash_key = "LockID"
        attribute {
          name = "LockID"
@@ -26,18 +33,8 @@ resource "aws_dynamodb_table" "my_dynamodb_state_table" {
       billing_mode = "PAY_PER_REQUEST"
 
       tags = {
-        name = var.aws_dynamodb_name
+        name = "statefile_table"
       }
 
-  
-}
-
-# S3 bucket for tfstate files
-resource "aws_s3_bucket" "my_state_file_bucket" {
-
-    bucket = var.aws_s3_bucket_name
-    tags = {
-      name = var.aws_s3_bucket_name
-    }
   
 }
