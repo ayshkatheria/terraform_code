@@ -1,23 +1,17 @@
-Need to create below resources :-
+Resources:
 
-1. Resouces :- EC2 & S3
+Resources: EC2 & S3
+Provider: AWS
+Variables: EC2 & S3 names, AMI, etc.
+Backend State File: S3 & DynamoDB
+AWS Configuration
+Steps:
 
-2. Provider :- aws
+📝 We will create a terraform.tf file, define the terraform block, and specify the "required providers" and the "backend block for S3."
+🛠️ Let's create the S3 bucket and define the S3 bucket name in the variables file.
+💻 Let's create the EC2 instance, define two resources—one for the key pair and the other for the instance—and pass the variables in the file.
+📦 Let's create DynamoDB for the backend state file table.
+Note:
 
-3. Variable :- for ec2 & S3 name, ami etc
-
-4. backend state file :- S3 & Dynamodb
-
-5. aws configure
-
-
-
-Steps:-
-1. We will create a terraform.tf file and create a terraform block and define "required providers" & "backend block for S3".
-2. Lets create S3 bucket and define s3 bucket name in variables file.
-3. Lets create ec2 intance, create two resources one for key-pair and other for instance and pass variables in file.
-4. Lets create Dynamodb for backend state file table .
-
-Note:- First need to create a S3 for backend block and then create a dynamodb for lock files.
-
-- Best way is to create a backend file instead of backend block under terraform block.
+First, create the S3 bucket for the backend block, then create DynamoDB for lock files.
+It's best to create a separate backend file instead of defining the backend block within the terraform block.
