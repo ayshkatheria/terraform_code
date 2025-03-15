@@ -1,0 +1,66 @@
+Now that we have created: ✅ VPC
+✅ Subnets in Two AZs
+✅ RDS Subnet Group
+✅ AWS Secrets Manager for Credentials
+✅ RDS Instance Configuration
+
+✅ 1. VPC (Virtual Private Cloud)
+Resource Name: aws_vpc.main
+CIDR Block: 10.0.0.0/16
+Purpose: Creates a private network for AWS resources.
+
+✅ 2. Subnets (In Two Availability Zones)
+Resource Name (Subnet 1): aws_subnet.subnet1
+
+CIDR Block: 10.0.1.0/24
+Availability Zone: us-east-1a
+Resource Name (Subnet 2): aws_subnet.subnet2
+
+CIDR Block: 10.0.2.0/24
+Availability Zone: us-east-1b
+Purpose: These subnets will be used for the RDS database.
+
+✅ 3. RDS Subnet Group
+Resource Name: aws_db_subnet_group.rds_subnet_group
+Subnet IDs: [aws_subnet.subnet1.id, aws_subnet.subnet2.id]
+Purpose: Ensures RDS can operate across multiple AZs.
+
+✅ 4. AWS Secrets Manager (For Storing DB Credentials)
+Resource Name: aws_secretsmanager_secret.rds_secret
+
+Secret Name: "rds-db-credentials"
+
+Purpose: Stores the database username & password securely.
+
+Retrieving Secret Version:
+
+Resource Name: data.aws_secretsmanager_secret_version.rds_secret_version
+Extracting Credentials Using jsondecode
+
+locals {
+  db_credentials = jsondecode(data.aws_secretsmanager_secret_version.rds_secret_version.secret_string)
+}
+
+✅ 5. RDS Database Instance
+Resource Name: aws_db_instance.example
+DB Engine: MySQL
+Instance Class: db.t3.micro
+Storage: 20 GB
+Subnet Group: aws_db_subnet_group.rds_subnet_group
+Username & Password: Fetched from Secrets Manager.
+
+After applying Terraform, verify:
+
+VPC & Subnets Exist:
+aws ec2 describe-subnets --region us-east-1
+
+Subnet Group Exists:
+aws rds describe-db-subnet-groups --region us-east-1
+
+RDS Instance is Running:
+aws rds describe-db-instances --region us-east-1
+
+
+
+
+
