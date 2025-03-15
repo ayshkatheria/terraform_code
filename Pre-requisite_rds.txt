@@ -1,0 +1,61 @@
+#Before creating RDB database need to configure secrets.
+
+1. Using AWS CLI 
+2. Using terraform code 
+
+1. create a new secret using awscli
+
+>>aws secretsmanager create-secret \
+  --name my-rds-secret \
+  --description "RDS database credentials" \
+  --secret-string '{"username":"admin","password":"SuperSecurePassword123!"}'
+
+2. To get the credentials run below command:-
+>> aws secretsmanager get-secret-value --secret-id my-rds-secret --no-cli-pager
+
+3. Configure and use in terraform while creating RDS Database :-
+
+Step 1: Retrieve the Secret in Terraform, In Terraform (main.tf), use the aws_secretsmanager_secret and 
+aws_secretsmanager_secret_version data sources to fetch the secret.
+
+>>>>>>>
+data "aws_secretsmanager_secret" "rds_secret" {
+  name = "my-rds-secret"  # The name of the secret you created with AWS CLI
+}
+
+data "aws_secretsmanager_secret_version" "rds_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.rds_secret.id
+}
+
+locals {
+  db_credentials = jsondecode(data.aws_secretsmanager_secret_version.rds_secret_version.secret_string)
+}
+<<<<<<<
+
+Note ::: We use the locals block with jsondecode to extract and store the secret values (username and password) in
+ a structured way from AWS Secrets Manager.
+- AWS Secrets Manager stores secrets as JSON strings
+-However, Terraform cannot directly access JSON properties inside a string. It needs to decode the JSON into a map before using it.
+
+
+
+Step 2: Use the Secret in the RDS Database Configuration
+Modify your aws_db_instance resource to use the credentials stored in AWS Secrets Manager:
+
+>>>>>>>>>>>>>>>>>>>>>>>>
+
+resource "aws_db_instance" "example" {
+  engine               = "mysql"
+  instance_class       = "db.t3.micro"
+  allocated_storage    = 20
+  storage_type         = "gp2"
+  identifier           = "my-rds-instance"
+
+  username            = local.db_credentials["username"]
+  password            = local.db_credentials["password"]
+
+  publicly_accessible  = false
+  skip_final_snapshot  = true
+}
+
+<<<<<<<<<<<<<<<<<<<<<<<<
