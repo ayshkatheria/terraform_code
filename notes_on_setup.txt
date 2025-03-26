@@ -1,0 +1,22 @@
+
+1. First need to create a secret using aws secret manager service
+- configure aws cli
+- pass creds in provider block as well
+- To create a secret run below command after configuring aws cli in local
+>> aws secretsmanager create-secret --name my-database-password --secret-string "YourSecurePassword"
+- To get all the secrets 
+>> aws secretsmanager list-secrets
+
+2. Now create provider block and setup region and aws cli creds.
+
+3. Create a s3 bucket first then dd same in backend block after creation.
+
+4. Create a rds database with mysql engine
+ - To get password from aws secret manager use below :-
+ >> data.aws_secretsmanager_secret_version.database_password.secret_string
+
+ - So password is in local file so makesure first add it using data block then use it in password attribute.
+
+Note :- if you will not specify VPC while creating db it will take default one
+
+5. Lets create a custom vpc then create a rds db
